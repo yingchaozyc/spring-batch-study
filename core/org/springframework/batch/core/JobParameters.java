@@ -23,6 +23,9 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
+ * 2014-12-24 底层的实现其实就是一个LinkedHashMap。提供了转换为Properties，以及k-v转换为各种
+ * 基本数据类型的方法。
+ * 
  * Value object representing runtime parameters to a batch job. Because the
  * parameters have no individual meaning outside of the JobParameters they are
  * contained within, it is a value object rather than an entity. It is also

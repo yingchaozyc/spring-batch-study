@@ -66,11 +66,14 @@ public class SimpleJobLauncher implements JobLauncher, InitializingBean {
 
 	protected static final Log logger = LogFactory.getLog(SimpleJobLauncher.class);
 
+	// 2014-12-24 在简单的例子中 jobRepository是通过spring注入的。launcher.setJobRepository((JobRepository) c.getBean("jobRepository"));
 	private JobRepository jobRepository;
 
 	private TaskExecutor taskExecutor;
 
 	/**
+	 * 2014-12-24 通过给定的JobParameter来运行job。传入的JobParameter决定了当前的任务是一个新任务还是旧任务。
+	 * 
 	 * Run the provided job with the given {@link JobParameters}. The
 	 * {@link JobParameters} will be used to determine if this is an execution
 	 * of an existing job instance, or if a new one should be created.

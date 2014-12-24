@@ -88,6 +88,8 @@ public abstract class AbstractStepParser {
 	private static final StepListenerParser stepListenerParser = new StepListenerParser(StepListenerMetaData.stepExecutionListenerMetaData());
 
 	/**
+	 * 2014-12-23 step元素的节点解析器
+	 * 
 	 * @param stepElement   The &lt;step/&gt; element
 	 * @param parserContext
 	 * @param jobFactoryRef the reference to the {@link JobParserJobFactoryBean}
@@ -101,6 +103,17 @@ public abstract class AbstractStepParser {
 		// look at all nested elements
 		NodeList children = stepElement.getChildNodes();
 		
+		/**
+		 * 一般来说，简单的step就长这个样子
+		 * 	   <batch:step id="firstStep">
+				  <batch:tasklet>
+				    <batch:chunk reader="messageReader" processor="messageProcessor" 
+				       writer="messageWriter" commit-interval="5" 
+				       chunk-completion-policy="">
+					</batch:chunk>
+				  </batch:tasklet>
+			   </batch:step>  
+		 */
 		for (int i = 0; i < children.getLength(); i++) {
 			Node nd = children.item(i);
 
@@ -120,6 +133,7 @@ public abstract class AbstractStepParser {
 					boolean stepUnderspecified = CoreNamespaceUtils.isUnderspecified(stepElement);
 					parsePartition(stepElement, nestedElement, bd, parserContext, stepUnderspecified, jobFactoryRef);
 				}
+				// 2014-12-23 竟然step里边可以放job节点?
 				else if (JOB_ELE.equals(name)) {
 					boolean stepUnderspecified = CoreNamespaceUtils.isUnderspecified(stepElement);
 					parseJob(stepElement, nestedElement, bd, parserContext, stepUnderspecified);

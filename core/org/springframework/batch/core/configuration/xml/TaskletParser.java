@@ -62,6 +62,7 @@ public class TaskletParser {
 
 	private static final String MERGE_ATTR = "merge";
 
+	// 2014-12-23 new出来chunk的解析器。准备处理chunk节点
 	private static final ChunkElementParser chunkElementParser = new ChunkElementParser();
 
 	// TODO: BATCH-1689, make this StepListenerParser.taskletListenerMetaData()
@@ -83,12 +84,17 @@ public class TaskletParser {
 				chunkElements, beanElements, refElements);
 
 		/**
-		 * 2014-12-23 在解析tasklet的同时如果发现了chunk元素，同时去解析chunk元素
+		 * 2014-12-23 在解析tasklet的同时如果发现了chunk元素，同时去解析chunk元素，一个大概的tasklet基本长如下这样
+			  	  <batch:tasklet>
+				    <batch:chunk reader="messageReader" processor="messageProcessor" 
+				       writer="messageWriter" commit-interval="5" 
+				       chunk-completion-policy="">
+					</batch:chunk>
+				  </batch:tasklet>
 		 */
 		if (!chunkElements.isEmpty()) {
 			chunkElementParser.parse(chunkElements.get(0), bd, parserContext, stepUnderspecified);
-		}
-		else {
+		} else {
 			BeanMetadataElement bme = null;
 			if (StringUtils.hasText(taskletRef)) {
 				bme = new RuntimeBeanReference(taskletRef);

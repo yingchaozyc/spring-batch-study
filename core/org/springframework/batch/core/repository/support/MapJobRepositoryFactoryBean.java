@@ -29,6 +29,10 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
+ * 2014-12-24. MapJobRepositoryFactoryBean是为了去创建SimpleJobRepository的。他使用了非持久的DAO实现。
+ * 所以这个repository一般是用在测试环境或者快速原型阶段。在这样的设置下你会发现ResourcelessTransactionManager
+ * 是非常有用的，因为他不涉及到关系型数据库。当前类不适合使用在多线程，即使他在多线程的step下是线程安全的。  
+ * 
  * A {@link FactoryBean} that automates the creation of a
  * {@link SimpleJobRepository} using non-persistent in-memory DAO
  * implementations. This repository is only really intended for use in testing

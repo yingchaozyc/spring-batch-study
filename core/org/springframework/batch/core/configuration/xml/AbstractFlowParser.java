@@ -115,6 +115,8 @@ public abstract class AbstractFlowParser extends AbstractSingleBeanDefinitionPar
 		List<BeanDefinition> stateTransitions = new ArrayList<BeanDefinition>();
 
 		SplitParser splitParser = new SplitParser(jobFactoryRef);
+		
+		// 2014-12-23 下边两句没明白做了什么
 		CompositeComponentDefinition compositeDef = new CompositeComponentDefinition(element.getTagName(),
 				parserContext.extractSource(element));
 		parserContext.pushContainingComponent(compositeDef);
@@ -122,24 +124,24 @@ public abstract class AbstractFlowParser extends AbstractSingleBeanDefinitionPar
 		boolean stepExists = false;
 		Map<String, Set<String>> reachableElementMap = new LinkedHashMap<String, Set<String>>();
 		String startElement = null;
+		
+		// 2014-12-23 element是【batch:job】， child当然是job下的子元素。包括text，comments, listener
 		NodeList children = element.getChildNodes();
 		for (int i = 0; i < children.getLength(); i++) {
 			Node node = children.item(i);
+			// 2014-12-23 这里的猜测是因为node有的时候可能只是纯文本节点，他不是一个Element，所以要多做一次if判断
 			if (node instanceof Element) {
 				String nodeName = node.getLocalName();
 				Element child = (Element) node;
 				if (nodeName.equals(STEP_ELE)) {
 					stateTransitions.addAll(stepParser.parse(child, parserContext, jobFactoryRef));
 					stepExists = true;
-				}
-				else if (nodeName.equals(DECISION_ELE)) {
+				} else if (nodeName.equals(DECISION_ELE)) {
 					stateTransitions.addAll(decisionParser.parse(child, parserContext));
-				}
-				else if (nodeName.equals(FLOW_ELE)) {
+				} else if (nodeName.equals(FLOW_ELE)) {
 					stateTransitions.addAll(flowParser.parse(child, parserContext));
 					stepExists = true;
-				}
-				else if (nodeName.equals(SPLIT_ELE)) {
+				} else if (nodeName.equals(SPLIT_ELE)) {
 					stateTransitions.addAll(splitParser
 							.parse(child, new ParserContext(parserContext.getReaderContext(), parserContext
 									.getDelegate(), builder.getBeanDefinition())));
@@ -271,6 +273,10 @@ public abstract class AbstractFlowParser extends AbstractSingleBeanDefinitionPar
 			}
 		}
 
+		/**
+		 * 2014-12-23 这里没有看懂。
+		 * 没有事务配置以及没有配置job的next属性的话，是要默认创建事务处理器么?
+		 */
 		if (!transitionElementExists) {
 			list.addAll(createTransition(FlowExecutionStatus.FAILED, FlowExecutionStatus.FAILED.getName(), null, null,
 					stateDef, parserContext, false));
@@ -280,8 +286,7 @@ public abstract class AbstractFlowParser extends AbstractSingleBeanDefinitionPar
 				list.addAll(createTransition(FlowExecutionStatus.COMPLETED, null, null, null, stateDef, parserContext,
 						false));
 			}
-		}
-		else if (hasNextAttribute) {
+		} else if (hasNextAttribute) {
 			parserContext.getReaderContext().error(
 					"The <" + element.getNodeName() + "/> may not contain a '" + NEXT_ATTR
 					+ "' attribute and a transition element", element);

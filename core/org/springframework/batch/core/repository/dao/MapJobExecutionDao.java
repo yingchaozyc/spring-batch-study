@@ -33,6 +33,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.SerializationUtils;
 
 /**
+ * 2014-12-24 当前类是内存实现版本的JobExecutionDao。
+ * 
  * In-memory implementation of {@link JobExecutionDao}.
  */
 public class MapJobExecutionDao implements JobExecutionDao {
@@ -47,6 +49,7 @@ public class MapJobExecutionDao implements JobExecutionDao {
 	}
 
 	private static JobExecution copy(JobExecution original) {
+		// 2014-12-24 序列化再反序列化就是想要的copy了? TODO
 		JobExecution copy = (JobExecution) SerializationUtils.deserialize(SerializationUtils.serialize(original));
 		return copy;
 	}

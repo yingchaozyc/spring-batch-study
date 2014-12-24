@@ -56,6 +56,8 @@ public class InlineStepParser extends AbstractStepParser {
 		BeanDefinitionBuilder stateBuilder = BeanDefinitionBuilder.genericBeanDefinition(StepState.class);
 		String stepId = element.getAttribute(ID_ATTR);
 
+		// 2014-12-23 根据debug信息来看，这里是解析step的入口，并且虽然job是最外层的xml节点，但是这里是每个step是一个bean
+		// 并且step的bean-class是factory-bean --> StepParserStepFactoryBean。
 		AbstractBeanDefinition bd = parseStep(element, parserContext, jobFactoryRef);
 		parserContext.registerBeanComponent(new BeanComponentDefinition(bd, stepId));
 		stateBuilder.addConstructorArgReference(stepId);

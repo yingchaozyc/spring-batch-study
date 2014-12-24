@@ -19,6 +19,6 @@ public class Main {
 			launcher.run(job, new JobParameters());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}
+		} 
+	} 
 }

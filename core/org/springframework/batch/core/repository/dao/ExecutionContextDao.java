@@ -23,6 +23,8 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.item.ExecutionContext;
 
 /**
+ * 2014-12-25 ExecutionContext的上下文DAO接口
+ * 
  * DAO interface for persisting and retrieving {@link ExecutionContext}s.
  * 
  * @author Robert Kasanicky
@@ -31,18 +33,24 @@ import org.springframework.batch.item.ExecutionContext;
 public interface ExecutionContextDao {
 
 	/**
+	 * 2014-12-25 根据job运行时信息jobExecution获取上下文信息ExecutionContext
+	 * 
 	 * @param jobExecution
 	 * @return execution context associated with the given jobExecution
 	 */
 	ExecutionContext getExecutionContext(JobExecution jobExecution);
 
 	/**
+	 * 2014-12-25 根据step运行时信息stepExecution获取上下文信息ExecutionContext。
+	 * 
 	 * @param stepExecution
 	 * @return execution context associated with the given stepExecution
 	 */
 	ExecutionContext getExecutionContext(StepExecution stepExecution);
 
 	/**
+	 * 2014-12-25 根据job运行时信息jobExecution保存上下文信息ExecutionContext。
+	 * 
 	 * Persist the execution context associated with the given jobExecution,
 	 * persistent entry for the context should not exist yet.
 	 * @param jobExecution
@@ -50,6 +58,8 @@ public interface ExecutionContextDao {
 	void saveExecutionContext(final JobExecution jobExecution);
 
 	/**
+	 * 2014-12-25 根据step运行时信息stepExecution保存上下文信息ExecutionContext。
+	 * 
 	 * Persist the execution context associated with the given stepExecution,
 	 * persistent entry for the context should not exist yet.
 	 * @param stepExecution
@@ -57,6 +67,8 @@ public interface ExecutionContextDao {
 	void saveExecutionContext(final StepExecution stepExecution);
 
 	/**
+	 * 2014-12-25 持久化一组StepExecution。
+	 * 
 	 * Persist the execution context associated with each stepExecution in a given collection,
 	 * persistent entry for the context should not exist yet.
 	 * @param stepExecutions
@@ -64,6 +76,8 @@ public interface ExecutionContextDao {
 	void saveExecutionContexts(final Collection<StepExecution> stepExecutions);
 
 	/**
+	 * 2014-12-25 根据jobExecution更新指定的ExecutionContext信息。
+	 * 
 	 * Persist the updates of execution context associated with the given
 	 * jobExecution. Persistent entry should already exist for this context.
 	 * @param jobExecution
@@ -71,6 +85,8 @@ public interface ExecutionContextDao {
 	void updateExecutionContext(final JobExecution jobExecution);
 
 	/**
+	 * 2014-12-25 根据stepExecution更新指定的ExecutionContext信息。 
+	 * 
 	 * Persist the updates of execution context associated with the given
 	 * stepExecution. Persistent entry should already exist for this context.
 	 * @param stepExecution

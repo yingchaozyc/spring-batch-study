@@ -40,6 +40,7 @@ import org.springframework.util.SerializationUtils;
 public class MapJobExecutionDao implements JobExecutionDao {
 
 	// JDK6 Make this into a ConcurrentSkipListMap: adds and removes tend to be very near the front or back
+	// 2014-12-24 内存存储job信息，key为currentId(自己定义的id)， value为jobExecution。
 	private final ConcurrentMap<Long, JobExecution> executionsById = new ConcurrentHashMap<Long, JobExecution>();
 
 	private final AtomicLong currentId = new AtomicLong(0L);
@@ -60,6 +61,7 @@ public class MapJobExecutionDao implements JobExecutionDao {
 		Long newId = currentId.getAndIncrement();
 		jobExecution.setId(newId);
 		jobExecution.incrementVersion();
+		// 2014-12-24 为什么这里要copy?
 		executionsById.put(newId, copy(jobExecution));
 	}
 
@@ -98,6 +100,7 @@ public class MapJobExecutionDao implements JobExecutionDao {
 		Assert.notNull(persistedExecution, "JobExecution must already be saved");
 
 		synchronized (jobExecution) {
+			// 2014-12-24 乐观锁判断 这里有这个必要么？直接这么更新 TODO
 			if (!persistedExecution.getVersion().equals(jobExecution.getVersion())) {
 				throw new OptimisticLockingFailureException("Attempt to update step execution id=" + id
 						+ " with wrong version (" + jobExecution.getVersion() + "), where current version is "
@@ -157,6 +160,9 @@ public class MapJobExecutionDao implements JobExecutionDao {
 
 	@Override
 	public void synchronizeStatus(JobExecution jobExecution) {
+		// 2014-12-24 这里只是做了判断，如果当前传入的jobExecution和内存中的版本不一致，同步传入的jobExecution
+		// 数据保持一致。
+		// A. 同步运行时状态 			B. 同步运行时版本
 		JobExecution saved = getJobExecution(jobExecution.getId());
 		if (saved.getVersion().intValue() != jobExecution.getVersion().intValue()) {
 			jobExecution.upgradeStatus(saved.getStatus());

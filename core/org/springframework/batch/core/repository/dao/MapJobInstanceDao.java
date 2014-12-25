@@ -33,6 +33,8 @@ import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.util.Assert;
 
 /**
+ * 2014-12-25 JobInstanceDao的内存实现版本。
+ * 
  * In-memory implementation of {@link JobInstanceDao}.
  */
 public class MapJobInstanceDao implements JobInstanceDao {

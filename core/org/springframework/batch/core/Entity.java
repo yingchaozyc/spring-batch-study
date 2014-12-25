@@ -74,6 +74,8 @@ public class Entity implements Serializable {
 	}
 
 	/**
+	 * 2014-12-24 版本号按照+1的方式进行新增。
+	 * 
 	 * Increment the version number
 	 */
 	public void incrementVersion() {

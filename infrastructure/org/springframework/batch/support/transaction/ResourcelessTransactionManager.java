@@ -24,6 +24,12 @@ import org.springframework.transaction.support.AbstractPlatformTransactionManage
 import org.springframework.transaction.support.DefaultTransactionStatus;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+/**
+ * 2014-12-25 一个测试阶段使用的事务管理器，不考虑事务。
+ * 
+ * @author yingchao.zyc
+ *
+ */
 @SuppressWarnings("serial")
 public class ResourcelessTransactionManager extends AbstractPlatformTransactionManager {
 

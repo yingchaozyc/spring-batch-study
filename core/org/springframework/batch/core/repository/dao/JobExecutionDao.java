@@ -59,7 +59,7 @@ public interface JobExecutionDao {
 	void updateJobExecution(JobExecution jobExecution);
 
 	/**
-	 * 2014-12-24 根据job实例获取job运行信息列表。倒序排序，所以最先执行的排在最后。
+	 * 2014-12-24 根据job实例获取job运行信息列表。倒序排序，所以最先执行的排在最后(按照id排序)。
 	 * 
 	 * Return all {@link JobExecution} for given {@link JobInstance}, sorted
 	 * backwards by creation order (so the first element is the most recent).

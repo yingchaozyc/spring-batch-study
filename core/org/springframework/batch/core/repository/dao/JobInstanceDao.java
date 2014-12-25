@@ -24,6 +24,10 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.NoSuchJobException;
 
 /**
+ * 2014-12-24 JOB实例对应的DAO层。目前分为两种:
+ * A: 内存相关的dao层MapJobInstanceDao。 只供测试数据用。
+ * B: 关系型数据库相关的dao层JdbcJobInstanceDao。
+ * 
  * Data Access Object for job instances.
  *
  * @author Lucas Ward
@@ -34,6 +38,9 @@ import org.springframework.batch.core.launch.NoSuchJobException;
 public interface JobInstanceDao {
 
 	/**
+	 * 2014-12-24 根据给定的名字和参数创建JobInstance。前提条件是给定条件下的JobInstance不存在。
+	 * 一个有效的实例将会返回并持久化(TODO)并包含一个唯一的ID.
+	 * 
 	 * Create a JobInstance with given name and parameters.
 	 *
 	 * PreConditions: JobInstance for given name and parameters must not already
@@ -49,6 +56,9 @@ public interface JobInstanceDao {
 	JobInstance createJobInstance(String jobName, JobParameters jobParameters);
 
 	/**
+	 * 2014-12-24 根据指定的名字和参数创建JobInstance。如果存在返回对应的JobInstance，如果不存在
+	 * 则返回为null。
+	 * 
 	 * Find the job instance that matches the given name and parameters. If no
 	 * matching job instances are found, then returns null.
 	 *
@@ -60,6 +70,8 @@ public interface JobInstanceDao {
 	JobInstance getJobInstance(String jobName, JobParameters jobParameters);
 
 	/**
+	 * 2014-12-24 根据指定的实例ID返回JobInstance对象.
+	 * 
 	 * Fetch the job instance with the provided identifier.
 	 *
 	 * @param instanceId the job identifier
@@ -68,6 +80,8 @@ public interface JobInstanceDao {
 	JobInstance getJobInstance(Long instanceId);
 
 	/**
+	 * 2014-12-24 根据指定的job运行时数据JobException获取Job实例JobInstance
+	 * 
 	 * Fetch the JobInstance for the provided JobExecution.
 	 *
 	 * @param jobExecution the JobExecution
@@ -76,6 +90,8 @@ public interface JobInstanceDao {
 	JobInstance getJobInstance(JobExecution jobExecution);
 
 	/**
+	 * 2014-12-24 截取
+	 * 
 	 * Fetch the last job instances with the provided name, sorted backwards by
 	 * primary key.
 	 *
@@ -91,6 +107,8 @@ public interface JobInstanceDao {
 	List<JobInstance> getJobInstances(String jobName, int start, int count);
 
 	/**
+	 * 2014-12-24 获取所有的job实例名称列表
+	 * 
 	 * Retrieve the names of all job instances sorted alphabetically - i.e. jobs
 	 * that have ever been executed.
 	 * @return the names of all job instances
@@ -98,6 +116,8 @@ public interface JobInstanceDao {
 	List<String> getJobNames();
 	
 	/**
+	 * 2014-12-24 用like关键字来搜索匹配的job实例。
+	 * 
 	 * Fetch the last job instances with the provided name, sorted backwards by
 	 * primary key, using a 'like' criteria
 	 * 
@@ -110,6 +130,8 @@ public interface JobInstanceDao {
 
 
 	/**
+	 * 2014-12-25 根据当前job的name查询
+	 * 
 	 * Query the repository for the number of unique {@link JobInstance}s
 	 * associated with the supplied job name.
 	 *

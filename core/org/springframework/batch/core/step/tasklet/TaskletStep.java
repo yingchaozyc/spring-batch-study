@@ -254,6 +254,7 @@ public class TaskletStep extends AbstractStep {
 		// in parallel without needing the lock
 		final Semaphore semaphore = createSemaphore();
 
+		// 2014-12-29 这个iterate很重要，负责了step的执行，以及循环执行，但是没太搞清楚原理
 		stepOperations.iterate(new StepContextRepeatCallback(stepExecution) {
 
 			@Override

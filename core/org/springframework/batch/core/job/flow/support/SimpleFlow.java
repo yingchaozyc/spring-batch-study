@@ -137,6 +137,8 @@ public class SimpleFlow implements Flow, InitializingBean {
 		if (startState == null) {
 			initializeTransitions();
 		}
+		
+		// 2014-12-21 这里的State的意思貌似不是状态，而是环节的意思
 		State state = startState;
 		String stateName = state.getName();
 		return resume(stateName, executor);

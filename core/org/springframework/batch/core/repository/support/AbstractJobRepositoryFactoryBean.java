@@ -154,6 +154,7 @@ public abstract class AbstractJobRepositoryFactoryBean implements FactoryBean<Jo
 	}
 
 	private void initializeProxy() throws Exception {
+		// 2014-12-26 和spring事务以及aop相关的初始化代码，着实没有看懂 TODO
 		if (proxyFactory == null) {
 			proxyFactory = new ProxyFactory();
 			TransactionInterceptor advice = new TransactionInterceptor(transactionManager,
@@ -196,6 +197,8 @@ public abstract class AbstractJobRepositoryFactoryBean implements FactoryBean<Jo
 				createExecutionContextDao());
 	}
 
+	// 2014-12-26 FactoryBean初始化入口, 返回的JobRepository是SimpleJobRepository。
+	// PS:在上边的getTarget方法有说明。
 	@Override
 	public JobRepository getObject() throws Exception {
 		if (proxyFactory == null) {

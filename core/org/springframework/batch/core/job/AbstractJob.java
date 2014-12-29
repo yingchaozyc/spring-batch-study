@@ -276,6 +276,8 @@ InitializingBean {
 			throws JobExecutionException;
 
 	/**
+	 * 2014-12-29 实际执行方法doExecute的一个代理层。
+	 * 
 	 * Run the specified job, handling all listener and repository calls, and
 	 * delegating the actual processing to {@link #doExecute(JobExecution)}.
 	 *
@@ -288,10 +290,13 @@ InitializingBean {
 
 		logger.debug("Job execution starting: " + execution);
 
+		// 2014-12-29 同步器？没明白 TODO
 		JobSynchronizationManager.register(execution);
 
 		try {
 
+			// 2014-12-29 jobParameter参数校验，设置批处理状态为STARTED状态，
+			// 执行listener。 这一小系列做完开始走实际的doExecute方法
 			jobParametersValidator.validate(execution.getJobParameters());
 
 			if (execution.getStatus() != BatchStatus.STOPPING) {
